@@ -49,3 +49,29 @@ export class AvailabilitySingleMeeting {
   })
   duration: number;
 }
+
+export class AvailabilityMultipleDays {
+  @ApiProperty({
+    description: 'start date',
+    type: String,
+  })
+  startTime: Date;
+
+  @ApiProperty({
+    description: 'end date',
+    type: String,
+  })
+  endTime: Date;
+
+  @ApiProperty({
+    description: 'duration in minutes',
+    type: Number,
+  })
+  interval: number;
+
+  @ApiProperty({
+    description: 'duration in minutes',
+    type: Number,
+  })
+  duration: number;
+}

@@ -1,17 +1,25 @@
 import { Param, Controller, Get, Post, Req, Body, Query } from '@nestjs/common';
 import { NylasService } from './nylas.service';
-import { AvailabilitySingleMeeting, FreeBusy, createEvent } from './nylasDto';
+import {
+  AvailabilityMultipleDays,
+  AvailabilitySingleMeeting,
+  FreeBusy,
+  createEvent,
+} from './nylasDto';
 
 @Controller('nylas')
 export class NylasController {
   constructor(private readonly nylasService: NylasService) {}
   @Get('/freeBusy/:startTime/:endTime')
-  getHello(@Param() freeBusyParams: FreeBusy, @Req() req: any): Promise<any> {
+  getFreeBusy(
+    @Param() freeBusyParams: FreeBusy,
+    @Req() req: any,
+  ): Promise<any> {
     return this.nylasService.freeBusy(freeBusyParams, req.nylas);
   }
 
   @Post('/getAvailability')
-  getNylas(
+  getAvailability(
     @Query() availabilitySingleMeeting: AvailabilitySingleMeeting,
     @Req() req: any,
   ): Promise<any> {
@@ -21,11 +29,28 @@ export class NylasController {
     );
   }
 
+  @Post('/getAvailabilityRoundRobin')
+  getNylas(
+    @Query() availabilityMultipleDays: AvailabilityMultipleDays,
+    @Req() req: any,
+  ): Promise<any> {
+    return this.nylasService.getAvailabilityRoundRobin(
+      availabilityMultipleDays,
+      req.nylas,
+    );
+  }
+
   @Post('/createEvent')
-  createEvent(
+  async createEvent(
     @Query() createEventQuery: createEvent,
     @Req() req: any,
   ): Promise<any> {
+    // function delay(ms: number) {
+    //   return new Promise((resolve) => setTimeout(resolve, ms));
+    // }
+
+    // this.nylasService.createEvent(createEventQuery, req.nylas);
+    // await delay(5000);
     return this.nylasService.createEvent(createEventQuery, req.nylas);
   }
 }
